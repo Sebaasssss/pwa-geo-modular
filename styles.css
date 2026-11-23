@@ -1,0 +1,152 @@
+:root {
+  --fondo: #0f172a;
+  --tarjeta: #1e293b;
+  --borde: #334155;
+  --texto: #e2e8f0;
+  --tenue: #94a3b8;
+  --primario: #3b82f6;
+  --primario-hover: #2563eb;
+  --alta: #22c55e;
+  --aprox: #f59e0b;
+  --manual: #a78bfa;
+  --error: #f87171;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  line-height: 1.5;
+}
+
+.encabezado {
+  padding: 20px 16px 8px;
+  text-align: center;
+}
+
+.encabezado h1 { margin: 0; font-size: 1.5rem; }
+.subtitulo { margin: 4px 0 8px; color: var(--tenue); font-size: 0.9rem; }
+
+.contenedor {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 8px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.tarjeta h2 { margin: 0 0 12px; font-size: 1.1rem; }
+
+.tarjeta-prepermiso { border-color: var(--primario); }
+.tarjeta-manual { border-color: var(--manual); }
+
+.diagnostico { display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; }
+.diagnostico > div { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.etiqueta { color: var(--tenue); }
+
+label { display: block; margin: 8px 0 4px; font-size: 0.9rem; color: var(--tenue); }
+
+input[type="text"], textarea, select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--borde);
+  background: var(--fondo);
+  color: var(--texto);
+  font: inherit;
+}
+
+.interruptor { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--texto); }
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primario { background: var(--primario); color: #fff; }
+.btn-primario:hover { background: var(--primario-hover); }
+.btn-secundario { background: transparent; color: var(--texto); border: 1px solid var(--borde); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-chico { width: auto; padding: 6px 14px; font-size: 0.85rem; margin-top: 4px; }
+
+.acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+.acciones .btn { flex: 1 1 180px; }
+
+.cargando { color: var(--primario); margin: 12px 0 0; }
+.cargando::before { content: "⏳ "; }
+.error { color: var(--error); margin: 12px 0 0; }
+.nota { color: var(--tenue); font-size: 0.85rem; margin: 8px 0 0; }
+
+.ayuda {
+  background: rgba(167, 139, 250, 0.1);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+}
+.ayuda ul { padding-left: 18px; margin: 6px 0; }
+.ayuda p { margin: 4px 0; }
+
+.insignia {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.insignia-alta { background: rgba(34, 197, 94, 0.15); color: var(--alta); }
+.insignia-aproximada { background: rgba(245, 158, 11, 0.15); color: var(--aprox); }
+.insignia-manual { background: rgba(167, 139, 250, 0.15); color: var(--manual); }
+
+.barra {
+  height: 8px;
+  margin: 12px 0;
+  background: var(--fondo);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.barra-relleno { height: 100%; width: 0; transition: width 0.4s ease; }
+.barra-alta { background: var(--alta); }
+.barra-aproximada { background: var(--aprox); }
+.barra-manual { background: var(--manual); }
+
+.datos {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+  margin: 0 0 12px;
+}
+.datos dt { color: var(--tenue); }
+.datos dd { margin: 0; font-family: ui-monospace, Consolas, monospace; text-align: right; overflow-wrap: anywhere; }
+
+.enlace { color: var(--primario); }
+
+.paquete {
+  background: var(--fondo);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 0.8rem;
+  overflow-x: auto;
+  margin: 12px 0 0;
+}
+
+.pie { text-align: center; color: var(--tenue); font-size: 0.8rem; padding: 16px; }
+
+[hidden] { display: none !important; }

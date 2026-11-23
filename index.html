@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Geolocalización consciente con pre-permiso y Plan B manual.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="GeoPWA">
+  <title>Reporte con Ubicación</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="encabezado">
+    <h1>📍 Reporte con Ubicación</h1>
+    <p class="subtitulo">Geolocalización consciente · Tema 6.3</p>
+    <button id="btn-instalar" class="btn btn-secundario btn-chico" hidden>Instalar app</button>
+  </header>
+
+  <main class="contenedor">
+    <!-- Diagnóstico del entorno -->
+    <section class="tarjeta diagnostico">
+      <div><span class="etiqueta">Dispositivo</span><span id="plataforma">—</span></div>
+      <div><span class="etiqueta">Estado del permiso</span><code id="estado-permiso">—</code></div>
+      <label class="interruptor">
+        <input type="checkbox" id="chk-alta-precision" checked>
+        <span>enableHighAccuracy (forzar GPS)</span>
+      </label>
+      <p id="nota-ios" class="nota" hidden>
+        iPhone: Safari y la PWA instalada guardan permisos por separado. Si concediste el permiso en Safari,
+        la app instalada te lo volverá a pedir.
+      </p>
+    </section>
+
+    <!-- Formulario de reporte -->
+    <section class="tarjeta">
+      <h2>Reporte técnico</h2>
+      <label for="rep-titulo">Título</label>
+      <input id="rep-titulo" type="text" placeholder="Ej. Fuga en tubería principal">
+      <label for="rep-descripcion">Descripción</label>
+      <textarea id="rep-descripcion" rows="3" placeholder="Describe la incidencia..."></textarea>
+
+      <button id="btn-adjuntar" class="btn btn-primario">Adjuntar mi ubicación</button>
+
+      <p id="estado-carga" class="cargando" hidden></p>
+      <p id="mensaje-error" class="error" role="alert" hidden></p>
+      <button id="btn-reintentar" class="btn btn-secundario" hidden>Reintentar con baja precisión (Wi-Fi / IP)</button>
+    </section>
+
+    <!-- Paso 1: Pre-Permiso -->
+    <section id="tarjeta-prepermiso" class="tarjeta tarjeta-prepermiso" hidden>
+      <h2>¿Por qué pedimos tu ubicación?</h2>
+      <p>
+        Necesitamos tu ubicación aproximada para <strong>adjuntar las coordenadas al reporte técnico</strong>
+        y <strong>calcular la sucursal más cercana</strong>. Solo se lee una vez, no se rastrea tu movimiento
+        y no sale de tu dispositivo.
+      </p>
+      <p class="nota">A continuación tu navegador mostrará su propio cuadro de permiso.</p>
+      <div class="acciones">
+        <button id="btn-confirmar" class="btn btn-primario">Compartir mi ubicación</button>
+        <button id="btn-cancelar" class="btn btn-secundario">Ahora no, elegir zona</button>
+      </div>
+    </section>
+
+    <!-- Plan B: selector manual -->
+    <section id="tarjeta-manual" class="tarjeta tarjeta-manual" hidden>
+      <h2>Plan B · Selecciona tu zona</h2>
+      <div id="ayuda-denegado" class="ayuda" hidden>
+        <p><strong>¿Cómo reactivar el permiso?</strong></p>
+        <ul>
+          <li><strong>Chrome (Android / PC):</strong> toca el ícono 🔒 junto a la URL → Permisos → Ubicación → Permitir.</li>
+          <li><strong>Safari (iPhone):</strong> Ajustes → Privacidad y seguridad → Localización → Sitios web de Safari → Preguntar.</li>
+          <li><strong>PWA instalada en iPhone:</strong> Ajustes → [nombre de la app] → Ubicación.</li>
+        </ul>
+        <p>Mientras tanto, puedes continuar eligiendo tu zona:</p>
+      </div>
+      <label for="selector-zona">Zona / ciudad</label>
+      <select id="selector-zona">
+        <option value="">— Selecciona —</option>
+      </select>
+      <button id="btn-aplicar-zona" class="btn btn-primario">Usar esta zona</button>
+    </section>
+
+    <!-- Resultado y calidad de señal -->
+    <section id="tarjeta-resultado" class="tarjeta" hidden>
+      <h2>Ubicación adjunta</h2>
+      <span id="res-insignia" class="insignia">—</span>
+      <div class="barra"><div id="res-barra" class="barra-relleno"></div></div>
+      <dl class="datos">
+        <dt>Latitud</dt><dd id="res-lat">—</dd>
+        <dt>Longitud</dt><dd id="res-lng">—</dd>
+        <dt>Precisión (accuracy)</dt><dd id="res-precision">—</dd>
+        <dt>Hora de lectura</dt><dd id="res-hora">—</dd>
+        <dt>Origen</dt><dd id="res-origen">—</dd>
+      </dl>
+      <a id="res-mapa" class="enlace" href="#" target="_blank" rel="noopener">Ver en OpenStreetMap ↗</a>
+    </section>
+
+    <!-- Consumidores reutilizando geo-helper.js -->
+    <section class="tarjeta">
+      <h2>Acciones</h2>
+      <div class="acciones">
+        <button id="btn-enviar" class="btn btn-primario" disabled>Enviar reporte</button>
+        <button id="btn-sucursal" class="btn btn-secundario">Sucursal más cercana</button>
+      </div>
+      <p id="salida-sucursal" class="nota" hidden></p>
+      <pre id="salida-paquete" class="paquete" hidden></pre>
+    </section>
+  </main>
+
+  <footer class="pie">Vanilla JS · Promesas sin async/await · GitHub Pages (HTTPS)</footer>
+
+  <!-- Orden obligatorio: primero el helper, luego la app -->
+  <script src="./geo-helper.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
